@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html>
+  <head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    
+    <title>关于机器学习 | Hexo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    
+      <link rel="icon" href="/favicon.png">
+    
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <link rel="stylesheet" href="/js/google-code-prettify/tomorrow-night-eighties.min.css">
+
+  </head>
+
+  <body>
+</body></html>
+<header>
+	<a id="logo" href="/" title="Hexo">
+	<img src="/favicon.png" alt="Hexo"></a>
+	
+	
+		<!--搜索栏-->
+		<i class="js-toggle-search iconfont icon-search"></i>
+
+
+<form class="js-search search-form search-form--modal" method="get" action="http://gushi.li" role="search">
+	<div class="search-form__inner">
+		<div>
+			<i class="iconfont icon-search"></i>
+			<input class="text-input" placeholder="Enter Key..." type="search">
+		</div>
+	</div>
+</form>
+	
+
+	
+		<!--侧边导航栏-->
+		<a id="nav-toggle" href="#"><span></span></a>
+
+<nav>
+	<div class="menu-top-container">
+		<ul id="menu-top" class="menu">
+			
+				
+				<li class="current-menu-item">
+					<a href="http://weibo.com/" target="_blank">Weibo</a>
+				</li>
+			
+		</ul>
+	</div>
+</nav>
+	
+
+</header>
+<div class="m-header ">
+	<section id="hero1" class="hero">
+		<div class="inner">
+		</div>
+	</section>
+	
+		<figure class="top-image" data-enable=true></figure>
+	
+</div>
+
+<!--文章列表-->
+<div class="wrapper">
+  
+    <!--文章-->
+<article>
+	
+  
+    <h1 class="post-title" itemprop="name">
+      关于机器学习
+    </h1>
+  
+
+	<div class='post-body mb'>
+		<p><font color="red" size="7">机器学习</font></p>
+<ul>
+<li>启动命令：<font color="Blue" size="4">在cmd中使用据jupyter lab</font></li>
+</ul>
+<p><font color="red" size="6">Numpy：</font></p>
+<ol>
+<li><font color="Bisque" size="5">常用的统计函数：</font><ol>
+<li><font color="Chartreuse" size="4">np.sum()</font><ul>
+<li><font color="GoldenRod" size="4">返回求和</font></li>
+</ul>
+</li>
+<li><font color="Chartreuse" size="4">np.mean()</font><ul>
+<li><font color="GoldenRod" size="4">返回平均值</font></li>
+</ul>
+</li>
+<li><font color="Chartreuse" size="4">np.max()</font><ul>
+<li><font color="GoldenRod" size="4">返回最大值</font></li>
+</ul>
+</li>
+<li><font color="Chartreuse" size="4">np.min()</font><ul>
+<li><font color="GoldenRod" size="4">返回最小值</font></li>
+</ul>
+</li>
+<li><font color="Chartreuse" size="4">np.std()</font><ul>
+<li><font color="GoldenRod" size="4">返回标准偏差</font></li>
+</ul>
+</li>
+<li><font color="Chartreuse" size="4">np.var()</font><ul>
+<li><font color="GoldenRod" size="4">返回方差</font></li>
+</ul>
+</li>
+<li><font color="Chartreuse" size="4">np.cumsum()</font><ul>
+<li><font color="GoldenRod" size="4">返回累加值</font></li>
+</ul>
+</li>
+<li><font color="Chartreuse" size="4">np.cumprod()</font><ul>
+<li><font color="GoldenRod" size="4">返回累乘积值</font></li>
+</ul>
+</li>
+</ol>
+</li>
+<li><font color="Bisque" size="4">Numpy的数值类型：</font><ol>
+<li><font color="MediumTurquoise" size="4">bool</font><ul>
+<li><font color="LightCoral" size="4">布尔类型True或者False    用1来表示True</font></li>
+</ul>
+</li>
+<li><font color="MediumTurquoise" size="4">inti</font><ul>
+<li><font color="LightCoral" size="4">其长度取决于平台的整数，一般是int32或者int64</font></li>
+</ul>
+</li>
+<li><font color="MediumTurquoise" size="4">int8</font><ul>
+<li><font color="LightCoral" size="4">字节长度的整数，取值为：[-128,127]</font></li>
+</ul>
+</li>
+<li><font color="MediumTurquoise" size="4">int16</font><ul>
+<li><font color="LightCoral" size="4">16位长度的整数，取值为：[-32768,32767]</font></li>
+</ul>
+</li>
+<li><font color="MediumTurquoise" size="4">int32</font><ul>
+<li><font color="LightCoral" size="4">32位长度的整数，取值为：[-2<strong>31，2</strong>31，-1]（**代表多少次方）</font></li>
+</ul>
+</li>
+<li><font color="MediumTurquoise" size="4">int64</font><ul>
+<li><font color="LightCoral" size="4">64位长度的整数，取值为：[-2<strong>63,2</strong>63，-1]（**代表多少次方）</font></li>
+</ul>
+</li>
+<li><font color="MediumTurquoise" size="4">uint8</font><ul>
+<li><font color="LightCoral" size="4">8位无符号的整数，取值为：[0,255]</font></li>
+</ul>
+</li>
+<li><font color="MediumTurquoise" size="4">uint16</font><ul>
+<li><font color="LightCoral" size="4">16位无符号的整数，取值为：[0,65535]</font></li>
+</ul>
+</li>
+<li><font color="MediumTurquoise" size="4">uint32</font><ul>
+<li><font color="LightCoral" size="4">32位无符号的整数，取值为：[0,2**32 - 1]</font></li>
+</ul>
+</li>
+<li><font color="MediumTurquoise" size="4">uint64</font><ul>
+<li><font color="LightCoral" size="4">64位无符号的整数，取值为：[0,2**64 - 1]</font></li>
+</ul>
+</li>
+<li><font color="MediumTurquoise" size="4">float16</font><ul>
+<li><font color="LightCoral" size="4">16位半精度浮点数：1位符号位，5位指数，23位尾数</font></li>
+</ul>
+</li>
+<li><font color="MediumTurquoise" size="4">float32</font><ul>
+<li><font color="LightCoral" size="4">32位半精度浮点数：1位符号位，8位指数，23位尾数</font></li>
+</ul>
+</li>
+<li><font color="MediumTurquoise" size="4">float64  或者可以直接叫float</font><ul>
+<li><font color="LightCoral" size="4">64位半精度浮点数：1位符号位，11位指数，52位尾数</font></li>
+</ul>
+</li>
+<li><font color="MediumTurquoise" size="4">complex64</font><ul>
+<li><font color="LightCoral" size="4">复数类型实部和虚部都是32位浮点数</font></li>
+</ul>
+</li>
+<li><font color="MediumTurquoise" size="4">complex28或者complex</font><ul>
+<li><font color="LightCoral" size="4">复数类型实部和虚部都是64位浮点数</font></li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
+<p><font color="red" size="6">Pandas：</font></p>
+<ul>
+<li><p><font color="Bisque" size="4">定义：</font></p>
+<ul>
+<li><font color="DodgerBlue" size="4">Pandas是一个强大的分析结构化数据的工具集，基于NumPy构建，提供了 高级数据结构 和 数据操作工具，它是使<br>Python成为强大而高效的数据分析环境的重要因素之一。</font><ul>
+<li><font color="DodgerBlue" size="4">基础是NumPy，提供了高性能矩阵的运算</font></li>
+<li><font color="DodgerBlue" size="4">提供了大量能够快速便捷地处理数据的函数和方法</font></li>
+<li><font color="DodgerBlue" size="4">应用于数据挖掘，数据分析</font></li>
+<li><font color="DodgerBlue" size="4">提供数据清洗功能</font></li>
+</ul>
+</li>
+</ul>
+<ol>
+<li><font color="LightSalmon" size="5">一维：</font><ul>
+<li><font color="Linen" size="4">Series</font><ul>
+<li><font color="Salmon" size="4">代码展示：</font><ul>
+<li><font color="SpringGreen" size="3">ser_obj = pd.Series(range(10,20))</font></li>
+<li><font color="SpringGreen" size="3">print(ser_obj.head(3))</font></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><font color="LightSalmon" size="5">二维：</font><ul>
+<li><font color="Linen" size="4">DataFrame</font><ul>
+<li><font color="Salmon" size="4">代码展示：</font><br>- </li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+
+	</div>
+	<div class="meta split">
+		
+			<span>本文总阅读量 <span id="busuanzi_value_page_pv"></span> 次</span>
+		
+		<time class="post-date" datetime="2017-01-14T04:15:45.000Z" itemprop="datePublished">2017-01-14</time>
+	</div>
+</article>
+
+<!--评论-->
+
+	
+<div class="ds-thread" data-thread-key="关于机器学习" data-title="关于机器学习" data-url="http://yoursite.com/2017/01/14/关于机器学习/"></div>
+<script type="text/javascript">
+
+var duoshuoQuery = {short_name:"yumemor"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0]
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+</script>
+
+
+  
+</div>
+
+
+  <svg id="bigTriangleColor" width="100%" height="40" viewBox="0 0 100 102" preserveAspectRatio="none">
+    <path d="M0 0 L50 100 L100 0 Z"></path>
+  </svg>
+
+  
+
+
+  <div class="wrapper"></div>
+
+
+
+
+
+<div class="fat-footer">
+	<div class="wrapper">
+		<div class="layout layout--center">
+			<div class="layout__item palm-mb">
+				<div class="media">
+					<img class="headimg" src='https://imgchr.github.la/steve.jpeg' alt='John Doe'>
+					<div class="media__body">
+						<h4>justpsvm</h4>
+						<p class='site-description'>Stay Hungry,Stay Foolish.</p>
+					</div>
+				</div>
+				<div class="author-contact">
+					<ul>
+						
+							
+							<li>
+				        		<a href="http://weibo.com/" target="_blank">
+				        			
+				        				<i class="iconfont icon-weibo"></i>
+				        			
+				        		</a>
+				        	</li>
+						
+							
+							<li>
+				        		<a href="https://github.com/" target="_blank">
+				        			
+				        				<i class="iconfont icon-github"></i>
+				        			
+				        		</a>
+				        	</li>
+						
+							
+							<li>
+				        		<a href="https://www.zhihu.com/" target="_blank">
+				        			
+										<i class="iconfont icon-zhihu"></i>
+				        			
+				        		</a>
+				        	</li>
+						
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<footer class="footer" role="contentinfo">
+	<div class="wrapper wrapper--wide split split--responsive">
+		
+			<span>本站总访问量 <span id="busuanzi_value_site_pv"></span> 次, 访客数 <span id="busuanzi_value_site_uv"></span> 人次</span>
+		
+		<span>Theme by <a href="http://github.com/justpsvm">justpsvm</a>. Powered by <a href="http://hexo.io">Hexo</a></span>
+	</div>
+</footer>
+
+	<!-－这里导入了 lib.js 里面涵盖了 jQuery 等框架 所以注释掉-->
+	<!--<script src="http://lib.sinaapp.com/js/jquery/2.0/jquery.min.js"></script>-->
+	<script src="/js/lib.js"></script>
+	<script src="/js/google-code-prettify/prettify.js"></script>
+	<script src="/js/module.js"></script>
+	<script src="/js/script.js"></script>
+	
+		<script async src="http://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+	
+	<script type='text/javascript'>
+		//代码高亮
+		$(document).ready(function(){
+	 		$('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto;');
+   			prettyPrint();
+		});
+	</script>
+	</body>
+</html>

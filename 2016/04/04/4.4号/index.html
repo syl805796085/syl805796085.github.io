@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html>
+  <head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    
+    <title>关于数据库 | Hexo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    
+      <link rel="icon" href="/favicon.png">
+    
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <link rel="stylesheet" href="/js/google-code-prettify/tomorrow-night-eighties.min.css">
+
+  </head>
+
+  <body>
+</body></html>
+<header>
+	<a id="logo" href="/" title="Hexo">
+	<img src="/favicon.png" alt="Hexo"></a>
+	
+	
+		<!--搜索栏-->
+		<i class="js-toggle-search iconfont icon-search"></i>
+
+
+<form class="js-search search-form search-form--modal" method="get" action="http://gushi.li" role="search">
+	<div class="search-form__inner">
+		<div>
+			<i class="iconfont icon-search"></i>
+			<input class="text-input" placeholder="Enter Key..." type="search">
+		</div>
+	</div>
+</form>
+	
+
+	
+		<!--侧边导航栏-->
+		<a id="nav-toggle" href="#"><span></span></a>
+
+<nav>
+	<div class="menu-top-container">
+		<ul id="menu-top" class="menu">
+			
+				
+				<li class="current-menu-item">
+					<a href="http://weibo.com/" target="_blank">Weibo</a>
+				</li>
+			
+		</ul>
+	</div>
+</nav>
+	
+
+</header>
+<div class="m-header ">
+	<section id="hero1" class="hero">
+		<div class="inner">
+		</div>
+	</section>
+	
+		<figure class="top-image" data-enable=true></figure>
+	
+</div>
+
+<!--文章列表-->
+<div class="wrapper">
+  
+    <!--文章-->
+<article>
+	
+  
+    <h1 class="post-title" itemprop="name">
+      关于数据库
+    </h1>
+  
+
+	<div class='post-body mb'>
+		<p><font color="red" size="7">4.4号</font></p>
+<p><font color="red" size="6">模板:</font></p>
+<ol>
+<li><p><font color="BlanchedAlmond" size="4">首先在数据库中创建<font color="green" size="3">django</font>使用的库</font></p>
+<ul>
+<li>代码:<ol>
+<li><font color="DarkOrchid" size="3">create database django_ku</font></li>
+</ol>
+</li>
+</ul>
+</li>
+<li><p><font color="BlanchedAlmond" size="4">配置属性</font></p>
+<ul>
+<li><p>代码：</p>
+<ul>
+<li><font color="DarkOrchid" size="3">DATABASES = {</font><ul>
+<li><font color="DarkOrchid" size="3">default{</font><ul>
+<li><font color="DarkOrchid" size="3">‘ENGINE’: ‘django.db.backends.mysql’, # 数据库引擎</font></li>
+<li><font color="DarkOrchid" size="3">“USER”: “root”, # 用户名 </font>        </li>
+<li><font color="DarkOrchid" size="3">‘NAME’: “django_ku”, # 使用的库名</font></li>
+<li><font color="DarkOrchid" size="3">“PASSWORD”: “sun123..”, # 数据库密码</font></li>
+<li><font color="DarkOrchid" size="3">“HOST”: “localhsot”, # 数据库主机地址</font>    </li>
+<li><font color="DarkOrchid" size="3">“PORT”: “3306”</font>    </li>
+</ul>
+</li>
+<li><font color="DarkOrchid" size="3">}</font></li>
+</ul>
+</li>
+<li><font color="DarkOrchid" size="3">}</font></li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<p><font color="red" size="5">安装pymysql命令：</font></p>
+<ul>
+<li><font color="CadetBlue" size="3">pip install pymysql -i <a href="https://pypi.tuna.tsinghua.edu.cn/simp" target="_blank" rel="noopener">https://pypi.tuna.tsinghua.edu.cn/simp</a></font></li>
+</ul>
+<p><font color="red" size="5">字段：</font></p>
+<ol>
+<li><font color="DarkGoldenRod" size="3">BooleabField</font><ul>
+<li>True/False字段，默认值为none</li>
+</ul>
+</li>
+<li><font color="DarkGoldenRod" size="3">CharField</font><ul>
+<li>字符串字段，必须含有max_length(用来设置字符串的长度)</li>
+</ul>
+</li>
+<li><font color="DarkGoldenRod" size="3">DateField</font><ul>
+<li>有两个参数<ol>
+<li>auto_now(当为True时保存数据使用当前时间)</li>
+<li>auto_now_add(当为True时显示第一次创建时)</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><font color="DarkGoldenRod" size="3">DatetimeField</font><ul>
+<li>使用datetime.datetime实例来表示日期和时间</li>
+</ul>
+</li>
+<li><font color="DarkGoldenRod" size="3">DecimalField</font><ul>
+<li>有两个参数<ol>
+<li>max_digits(显示位数总数)</li>
+<li>decimal_places(显示数量和精度)</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><font color="DarkGoldenRod" size="3">RmailField</font><ul>
+<li>邮件地址<ol>
+<li>max_length(用来表示邮箱地址的长度，一般都是254)</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><font color="DarkGoldenRod" size="3">FloatField</font><ul>
+<li>表示浮点数</li>
+</ul>
+</li>
+<li><font color="DarkGoldenRod" size="3">integerField</font><ul>
+<li>表示一个整数，范围是 -2147483648到2147483647</li>
+</ul>
+</li>
+<li><font color="DarkGoldenRod" size="3">GenericlPAddressField</font><ul>
+<li>IPV4或者IPV6的字符串<ol>
+<li>protoco1     IP协议默认both为全选</li>
+<li>unpack_ipv4     解析IP地址只有当协议为both才可以用</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><font color="DarkGoldenRod" size="3">SlugField</font><ul>
+<li>只包含字母、数字、下划线的字符串</li>
+</ul>
+</li>
+<li><font color="DarkGoldenRod" size="3">TextField</font><ul>
+<li>大文本字段</li>
+</ul>
+</li>
+<li><font color="DarkGoldenRod" size="3">URLField</font><ul>
+<li>存储URL字段</li>
+</ul>
+</li>
+</ol>
+<p><font color="red" size="5">字段属性：</font></p>
+<ul>
+<li>​    上面的字段都支持下面的属性</li>
+</ul>
+<ol>
+<li><font color="DarkViolet" size="3">null</font><ul>
+<li>使用空字符代表空值</li>
+</ul>
+</li>
+<li><font color="DarkViolet" size="3">blank</font><ul>
+<li>为True代表可以字段值为空</li>
+</ul>
+</li>
+<li><font color="DarkViolet" size="3">choices</font><ul>
+<li>二元组的列表或者元组</li>
+</ul>
+</li>
+<li><font color="DarkViolet" size="3">db_column</font><ul>
+<li>表示该字段的名称</li>
+</ul>
+</li>
+<li><font color="DarkViolet" size="3">db_index</font><ul>
+<li>为True时创建索引</li>
+</ul>
+</li>
+<li><font color="DarkViolet" size="3">default</font><ul>
+<li>默认时可以是回调函数</li>
+</ul>
+</li>
+<li><font color="DarkViolet" size="3">editable</font><ul>
+<li>如果为False是不允许被修改</li>
+</ul>
+</li>
+<li><font color="DarkViolet" size="3">primary_key</font><ul>
+<li>一个模型类同时只能有一个主键</li>
+</ul>
+</li>
+<li><font color="DarkViolet" size="3">unique</font><ul>
+<li>为True代表这个数据是唯一的</li>
+</ul>
+</li>
+<li><font color="DarkViolet" size="3">verbose_name</font><ul>
+<li>对于字段的一个可读性更高的名称</li>
+</ul>
+</li>
+<li><font color="DarkViolet" size="3">app_label</font><ul>
+<li>描述属于哪个app下面</li>
+</ul>
+</li>
+<li><font color="DarkViolet" size="3">db_table</font><ul>
+<li>显示当前模型所对应的表名</li>
+</ul>
+</li>
+<li><font color="DarkViolet" size="3">ordering</font><ul>
+<li>显示数据存储是的排序规则</li>
+</ul>
+</li>
+<li><font color="DarkViolet" size="3">unique_together</font><ul>
+<li>设置表中的不重复字段组合</li>
+</ul>
+</li>
+<li><font color="DarkViolet" size="3">verbose_name</font><ul>
+<li>显示这个表的使用名称    </li>
+</ul>
+</li>
+<li><font color="DarkViolet" size="3">verbose_name_plural</font><ul>
+<li>设置表的复数名称</li>
+</ul>
+</li>
+</ol>
+<p><font color="red" size="4">查找对象：</font></p>
+<ol>
+<li><font color="DarkViolet" size="3">all()</font><ul>
+<li>获取表中所有数据，返回的是queryset的数据对象<ol>
+<li>代码：<ul>
+<li>all_person = Person.objects.all()</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><font color="DarkViolet" size="3">filter(**kwargs)</font><ul>
+<li>返回一个包含数据对象的集合<ol>
+<li>代码：<ul>
+<li>res = Person.objects.all().filter(age__lt=16)</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><font color="DarkViolet" size="3">exclude(**kwargs)</font><ul>
+<li>返回一个包含数据对象的集合，数据为不满足参数中所给的条件</li>
+</ul>
+</li>
+<li><font color="DarkViolet" size="3">get(**kwargs)</font><ul>
+<li>获取单条数据<ol>
+<li>代码：<ul>
+<li>Person.objects.get()</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><font color="DarkViolet" size="3">order_by(*field)</font><ul>
+<li>可以进行查询结果的排序<ol>
+<li>代码：<ul>
+<li>Person.objects.all().order_by()</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><font color="DarkViolet" size="3">count()</font><ul>
+<li>返回数据库中字段的个数<ol>
+<li>代码：<ul>
+<li>models.Person.objects.filter(age=20).count()</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><font color="DarkViolet" size="3">values(*fields)</font><ul>
+<li>返回查询的结果，返回的是字典不是实例对象<ol>
+<li>代码：<ul>
+<li>models.Person.objects.all().values()</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+</li>
+</ol>
+<p><font color="red" size="4">修改对象：</font></p>
+<ul>
+<li>代码：<ol>
+<li>models.Person.objects.filter(age__gt=40).update(age=18)<ul>
+<li>将年纪等于40的改为18</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+<p><font color="red" size="4">删除对象：</font></p>
+<ul>
+<li>代码：<ol>
+<li>models.Person.objects.get(    ).delete()</li>
+</ol>
+</li>
+</ul>
+<p><font color="red" size="5">字段关系：</font></p>
+<ol>
+<li><p><font color="Sienna" size="3">一对一：</font></p>
+<ul>
+<li><p>一个表和一个表</p>
+</li>
+<li><p>一对一的关系：继承关系</p>
+<ol>
+<li><p><font color="SandyBrown" size="4">举例子：</font></p>
+<ul>
+<li><p>一个老师对应一个学生</p>
+</li>
+<li><p>一夫一妻</p>
+</li>
+<li><p>一个人一个水杯</p>
+</li>
+<li><p>一个人一张身份证</p>
+<ol>
+<li><p><font color="SandyBrown" size="4">代码：</font></p>
+<ol>
+<li><p>class Teacher(models.Model):</p>
+<pre><code>name =models.CharField(max_length=50)
+   age = models.CharField(max_length=50)
+   def __str__(self):
+       return self.name</code></pre><p>class Professor(models.Model):</p>
+<pre><code> teacher=models.OneToOneField(Teacher,primary_key=True,on_delete=models.CASCADE)
+big_project = models.CharField(max_length=50)
+def __str__(self):
+    return self.teacher.name</code></pre></li>
+<li><p><font color="SandyBrown" size="4">展示效果的操作方法</font></p>
+<ol>
+<li><p>在 manage.py shell 下进行数据库操作</p>
+<ul>
+<li><p><font color="SandyBrown" size="4">效果代码：</font></p>
+<ol>
+<li><p>t1 = Teacher.objects.create(name=’Jack’,age=’22’)<br>t2 = Teacher.objects.create(name=’Bob’,age=’17’)<br>p1 = Professor.objects.create(teacher=t1,big_project=’雾霾净化术’)<br>p1.teacher</p>
+<p>&lt;Teacher: Jack&gt;<br>p1.teacher = t2<br>p1.save()<br>p1.teacher<br>&lt;Teacher: Bob&gt;</p>
+</li>
+</ol>
+</li>
+</ul>
+<p><font color="red" size="4">注意：</font></p>
+<ul>
+<li>​    正确的做法应该是将某一条数据的一对一关系通过 delete 关系先删除之后再重新赋予</li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><p><font color="Sienna" size="3">多对一：</font></p>
+<ul>
+<li>多张表对一张表</li>
+<li>Django中定义多对一的关系<ol>
+<li><font color="LightSeaGreen" size="3">django.db.models.ForeignKey</font></li>
+</ol>
+</li>
+<li>Fo’re’i’gnkey必须要有一个位置参数这个参数用来和模型关联<ol>
+<li><font color="SandyBrown" size="4">举例子：</font><ul>
+<li>多个学生使用一个饮水机</li>
+<li>一个饮水机可以给多桶水加热</li>
+<li>一个班主任带多个班</li>
+<li>一夫多妻制<ul>
+<li><font color="SandyBrown" size="4">代码：</font><ol>
+<li>class Headmaster(models.Model):<pre><code>name = models.CharField(max_length=50)
+   def __str__(self):
+       return self.name</code></pre>class Class(models.Model):<pre><code>class_name = models.CharField(max_length=50)
+teacher = models.ForeignKey(Headmaster,null=True,on_delete=models.SET_NULL)
+def __str__(self):
+    return self.class_name</code></pre></li>
+<li><font color="SandyBrown" size="4">查看效果代码：</font><ul>
+<li>在 manage.py shell 下进行数据库操作</li>
+<li>代码：<ul>
+<li>H1 = Headmaster(name=’渔夫’)<br>H1.save()<br>H1<br>&lt;Headmaster: 渔夫&gt;<br>H2 = Headmaster(name=’农夫’)<br>H2.save()<br>Headmaster.objects.all()<br>[&lt;Headmaster: 渔夫&gt;, &lt;Headmaster: 农夫&gt;]</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><p><font color="Sienna" size="3">多对多：</font></p>
+<ul>
+<li><p>多张表对多张表</p>
+<ol>
+<li><p><font color="SandyBrown" size="4">举例子：</font></p>
+<ul>
+<li><p>多个学生喝几桶水</p>
+</li>
+<li><p>多个学生使用多个电灯泡照明</p>
+<ol>
+<li><p><font color="SandyBrown" size="4">代码：</font></p>
+<p>class Artist(models.Model):</p>
+<pre><code>artist_name = models.CharField(max_length=50)
+def __str__(self):
+    return self.artist_name</code></pre><p>class Band(models.Model):</p>
+<pre><code>band_name = models.CharField(max_length=50)
+artist = models.ManyToManyField(Artist)
+def __str__(self):
+    return self.band_name</code></pre></li>
+<li><p><font color="SandyBrown" size="4">查看效果：</font></p>
+<p>from bbs.models import Artist,Band</p>
+<p>A1 = Artist.objects.create(artist_name=’Jack’)<br>A2 = Artist.objects.create(artist_name=’Bob’)<br>B1 = Band.objects.create(band_name=’FiveMonthDay’)<br>B2 = Band.objects.create(band_name=’SHE’)</p>
+<ul>
+<li><p>当多对多要添加字段时，可以使用add进行添加</p>
+</li>
+<li><p><font color="SandyBrown" size="3">代码：</font></p>
+<ol>
+<li><p>B1.artist.add(A1,A2)</p>
+<p>B2.artist.add(A2)</p>
+</li>
+</ol>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+</li>
+</ol>
+<p><font color="red" size="5">反向查询：</font></p>
+<ul>
+<li><p>使用_set进行反向查询</p>
+</li>
+<li><p><font color="red" size="3">注意：</font>related_name一定是一个唯一的值，否则反向查找时会出现二异性错误</p>
+</li>
+<li><p><font color="SandyBrown" size="4">代码：</font></p>
+<ul>
+<li><p>class Aramy(models.Model):</p>
+<pre><code>name = models.CharField(max_length=30)
+  def __str__(self):
+      return self.name</code></pre><p>class Soldier(models.Model):</p>
+<pre><code>aramy = models.ForeignKey(Aramy,on_delete=models.CASCADE)
+name = models.CharField(max_length=30)
+def __str__(self):
+    return self.name</code></pre><ul>
+<li><font color="SandyBrown" size="3">首先创建一些数据添加进去：</font><ul>
+<li><font color="SandyBrown" size="3">代码：</font><ul>
+<li>a1 = Aramy(name=’一军’)<br>a1.save()<br>s1 = Soldier(name=’张三’,aramy=a1)<br>s1.save()<br>s2 = Soldier(name=’李四’,aramy=a1)<br>s2.save()</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><font color="SandyBrown" size="3">使用filter查询：</font></p>
+<ul>
+<li>a1.soldier_set.filter(name=’张三’)</li>
+</ul>
+</li>
+<li><p><font color="SandyBrown" size="3">全部查询：</font></p>
+<ul>
+<li>a1.soldier_set.all()</li>
+</ul>
+</li>
+<li><p>通过relater_name进行查询</p>
+<ul>
+<li><p><font color="red" size="3">注意：</font></p>
+<ul>
+<li><font color="OldLace" size="3">related_name必须唯一</font></li>
+</ul>
+</li>
+<li><p><font color="SandyBrown" size="3">代码：</font></p>
+<p>class Aramy(models.Model):</p>
+<pre><code>name = models.CharField(max_length=30)
+def __str__(self):
+    return self.name</code></pre><p>class Soldier(models.Model):</p>
+<pre><code>aramy = models.ForeignKey(Aramy,on_delete=models.CASCADE,related_name=&apos;soldier&apos;)
+name = models.CharField(max_length=30)
+def __str__(self):
+    return self.name</code></pre></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><font color="red" size="4">反向查询：</font></p>
+<ul>
+<li><p>a1 = Aramy.objects.all()[0]</p>
+<p>s1 = Soldier.objects.get(name=’张三’)<br>a1.soldier.all()</p>
+</li>
+<li><p><font color="red" size="3">注意：</font></p>
+<ul>
+<li>relater_name一定时一个唯一的值，否则方向查找会出现异性错误</li>
+</ul>
+</li>
+</ul>
+<ol>
+<li><font color="red" size="4">取消反向查询：</font><ul>
+<li>使用related_name初始化为+，来取消反向查询</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+
+	</div>
+	<div class="meta split">
+		
+			<span>本文总阅读量 <span id="busuanzi_value_page_pv"></span> 次</span>
+		
+		<time class="post-date" datetime="2016-04-04T06:28:36.000Z" itemprop="datePublished">2016-04-04</time>
+	</div>
+</article>
+
+<!--评论-->
+
+	
+<div class="ds-thread" data-thread-key="4.4号" data-title="关于数据库" data-url="http://yoursite.com/2016/04/04/4.4号/"></div>
+<script type="text/javascript">
+
+var duoshuoQuery = {short_name:"yumemor"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0]
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+</script>
+
+
+  
+</div>
+
+
+  <svg id="bigTriangleColor" width="100%" height="40" viewBox="0 0 100 102" preserveAspectRatio="none">
+    <path d="M0 0 L50 100 L100 0 Z"></path>
+  </svg>
+
+  
+
+
+  <div class="wrapper"></div>
+
+
+
+
+
+<div class="fat-footer">
+	<div class="wrapper">
+		<div class="layout layout--center">
+			<div class="layout__item palm-mb">
+				<div class="media">
+					<img class="headimg" src='https://imgchr.github.la/steve.jpeg' alt='John Doe'>
+					<div class="media__body">
+						<h4>justpsvm</h4>
+						<p class='site-description'>Stay Hungry,Stay Foolish.</p>
+					</div>
+				</div>
+				<div class="author-contact">
+					<ul>
+						
+							
+							<li>
+				        		<a href="http://weibo.com/" target="_blank">
+				        			
+				        				<i class="iconfont icon-weibo"></i>
+				        			
+				        		</a>
+				        	</li>
+						
+							
+							<li>
+				        		<a href="https://github.com/" target="_blank">
+				        			
+				        				<i class="iconfont icon-github"></i>
+				        			
+				        		</a>
+				        	</li>
+						
+							
+							<li>
+				        		<a href="https://www.zhihu.com/" target="_blank">
+				        			
+										<i class="iconfont icon-zhihu"></i>
+				        			
+				        		</a>
+				        	</li>
+						
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<footer class="footer" role="contentinfo">
+	<div class="wrapper wrapper--wide split split--responsive">
+		
+			<span>本站总访问量 <span id="busuanzi_value_site_pv"></span> 次, 访客数 <span id="busuanzi_value_site_uv"></span> 人次</span>
+		
+		<span>Theme by <a href="http://github.com/justpsvm">justpsvm</a>. Powered by <a href="http://hexo.io">Hexo</a></span>
+	</div>
+</footer>
+
+	<!-－这里导入了 lib.js 里面涵盖了 jQuery 等框架 所以注释掉-->
+	<!--<script src="http://lib.sinaapp.com/js/jquery/2.0/jquery.min.js"></script>-->
+	<script src="/js/lib.js"></script>
+	<script src="/js/google-code-prettify/prettify.js"></script>
+	<script src="/js/module.js"></script>
+	<script src="/js/script.js"></script>
+	
+		<script async src="http://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+	
+	<script type='text/javascript'>
+		//代码高亮
+		$(document).ready(function(){
+	 		$('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto;');
+   			prettyPrint();
+		});
+	</script>
+	</body>
+</html>

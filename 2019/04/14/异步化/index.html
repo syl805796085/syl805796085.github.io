@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+  <head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    
+    <title>异步化 | Hexo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    
+      <link rel="icon" href="/favicon.png">
+    
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <link rel="stylesheet" href="/js/google-code-prettify/tomorrow-night-eighties.min.css">
+
+  </head>
+
+  <body>
+</body></html>
+<header>
+	<a id="logo" href="/" title="Hexo">
+	<img src="/favicon.png" alt="Hexo"></a>
+	
+	
+		<!--搜索栏-->
+		<i class="js-toggle-search iconfont icon-search"></i>
+
+
+<form class="js-search search-form search-form--modal" method="get" action="http://gushi.li" role="search">
+	<div class="search-form__inner">
+		<div>
+			<i class="iconfont icon-search"></i>
+			<input class="text-input" placeholder="Enter Key..." type="search">
+		</div>
+	</div>
+</form>
+	
+
+	
+		<!--侧边导航栏-->
+		<a id="nav-toggle" href="#"><span></span></a>
+
+<nav>
+	<div class="menu-top-container">
+		<ul id="menu-top" class="menu">
+			
+				
+				<li class="current-menu-item">
+					<a href="http://weibo.com/" target="_blank">Weibo</a>
+				</li>
+			
+		</ul>
+	</div>
+</nav>
+	
+
+</header>
+<div class="m-header ">
+	<section id="hero1" class="hero">
+		<div class="inner">
+		</div>
+	</section>
+	
+		<figure class="top-image" data-enable=true></figure>
+	
+</div>
+
+<!--文章列表-->
+<div class="wrapper">
+  
+    <!--文章-->
+<article>
+	
+  
+    <h1 class="post-title" itemprop="name">
+      异步化
+    </h1>
+  
+
+	<div class='post-body mb'>
+		<h2 id="异步化"><a href="#异步化" class="headerlink" title="异步化"></a>异步化</h2><p>在前面的例子中，我们并没有对<code>RequestHandler</code>中的<code>get</code>或<code>post</code>方法进行异步处理，这就意味着，一旦在<code>get</code>或<code>post</code>方法中出现了耗时间的操作，不仅仅是当前请求被阻塞，按照Tornado框架的工作模式，其他的请求也会被阻塞，所以我们需要对耗时间的操作进行异步化处理。</p>
+<p>在Tornado稍早一些的版本中，可以用装饰器实现请求方法的异步化或协程化来解决这个问题。</p>
+<ul>
+<li><p>给<code>RequestHandler</code>的请求处理函数添加<code>@tornado.web.asynchronous</code>装饰器，如下所示：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AsyncReqHandler</span><span class="params">(RequestHandler)</span>:</span></span><br><span class="line">    </span><br><span class="line"><span class="meta">    @tornado.web.asynchronous</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(self)</span>:</span></span><br><span class="line">       http = httpclient.AsyncHTTPClient()</span><br><span class="line">       http.fetch(<span class="string">"http://example.com/"</span>, self._on_download)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_on_download</span><span class="params">(self, response)</span>:</span></span><br><span class="line">       do_something_with_response(response)</span><br><span class="line">       self.render(<span class="string">"template.html"</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>给<code>RequestHandler</code>的请求处理函数添加<code>@tornado.gen.coroutine</code>装饰器，如下所示：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GenAsyncHandler</span><span class="params">(RequestHandler)</span>:</span></span><br><span class="line">    </span><br><span class="line"><span class="meta">    @tornado.gen.coroutine</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(self)</span>:</span></span><br><span class="line">        http_client = AsyncHTTPClient()</span><br><span class="line">        response = <span class="keyword">yield</span> http_client.fetch(<span class="string">"http://example.com"</span>)</span><br><span class="line">        do_something_with_response(response)</span><br><span class="line">        self.render(<span class="string">"template.html"</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用<code>@return_future</code>装饰器，如下所示：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@return_future</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">future_func</span><span class="params">(arg1, arg2, callback)</span>:</span></span><br><span class="line">    <span class="comment"># Do stuff (possibly asynchronous)</span></span><br><span class="line">    callback(result)</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">caller</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">await</span> future_func(arg1, arg2)</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>在Tornado 5.x版本中，这几个装饰器都被标记为<strong>deprcated</strong>（过时），我们可以通过Python 3.5中引入的<code>async</code>和<code>await</code>（在Python 3.7中已经成为正式的关键字）来达到同样的效果。当然，要实现异步化还得靠其他的支持异步操作的三方库来支持，如果请求处理函数中用到了不支持异步操作的三方库，就需要靠自己写包装类来支持异步化。</p>
+<p>下面的代码演示了在读写数据库时如何实现请求处理的异步化。我们用到的数据库建表语句如下所示：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">database</span> hrs <span class="keyword">default</span> <span class="keyword">charset</span> utf8;</span><br><span class="line"></span><br><span class="line"><span class="keyword">use</span> hrs;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 创建部门表 */</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> tb_dept</span><br><span class="line">(</span><br><span class="line">    dno     <span class="built_in">int</span> <span class="keyword">not</span> <span class="literal">null</span> <span class="keyword">comment</span> <span class="string">'部门编号'</span>,</span><br><span class="line">    dname   <span class="built_in">varchar</span>(<span class="number">10</span>) <span class="keyword">not</span> <span class="literal">null</span> <span class="keyword">comment</span> <span class="string">'部门名称'</span>,</span><br><span class="line">    dloc    <span class="built_in">varchar</span>(<span class="number">20</span>) <span class="keyword">not</span> <span class="literal">null</span> <span class="keyword">comment</span> <span class="string">'部门所在地'</span>,</span><br><span class="line">    primary <span class="keyword">key</span> (dno)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> tb_dept <span class="keyword">values</span></span><br><span class="line">    (<span class="number">10</span>, <span class="string">'会计部'</span>, <span class="string">'北京'</span>),</span><br><span class="line">    (<span class="number">20</span>, <span class="string">'研发部'</span>, <span class="string">'成都'</span>),</span><br><span class="line">    (<span class="number">30</span>, <span class="string">'销售部'</span>, <span class="string">'重庆'</span>),</span><br><span class="line">    (<span class="number">40</span>, <span class="string">'运维部'</span>, <span class="string">'深圳'</span>);</span><br></pre></td></tr></table></figure>
+
+<p>我们通过下面的代码实现了查询和新增部门两个操作。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> json</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> aiomysql</span><br><span class="line"><span class="keyword">import</span> tornado</span><br><span class="line"><span class="keyword">import</span> tornado.web</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> tornado.ioloop <span class="keyword">import</span> IOLoop</span><br><span class="line"><span class="keyword">from</span> tornado.options <span class="keyword">import</span> define, parse_command_line, options</span><br><span class="line"></span><br><span class="line">define(<span class="string">'port'</span>, default=<span class="number">8000</span>, type=int)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">connect_mysql</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">await</span> aiomysql.connect(</span><br><span class="line">        host=<span class="string">'120.77.222.217'</span>,</span><br><span class="line">        port=<span class="number">3306</span>,</span><br><span class="line">        db=<span class="string">'hrs'</span>,</span><br><span class="line">        user=<span class="string">'root'</span>,</span><br><span class="line">        password=<span class="string">'123456'</span>,</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">HomeHandler</span><span class="params">(tornado.web.RequestHandler)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(self, no)</span>:</span></span><br><span class="line">        <span class="keyword">async</span> <span class="keyword">with</span> self.settings[<span class="string">'mysql'</span>].cursor(aiomysql.DictCursor) <span class="keyword">as</span> cursor:</span><br><span class="line">            <span class="keyword">await</span> cursor.execute(<span class="string">"select * from tb_dept where dno=%s"</span>, (no, ))</span><br><span class="line">            <span class="keyword">if</span> cursor.rowcount == <span class="number">0</span>:</span><br><span class="line">                self.finish(json.dumps(&#123;</span><br><span class="line">                    <span class="string">'code'</span>: <span class="number">20001</span>,</span><br><span class="line">                    <span class="string">'mesg'</span>: <span class="string">f'没有编号为<span class="subst">&#123;no&#125;</span>的部门'</span></span><br><span class="line">                &#125;))</span><br><span class="line">                <span class="keyword">return</span></span><br><span class="line">            row = <span class="keyword">await</span> cursor.fetchone()</span><br><span class="line">            self.finish(json.dumps(row))</span><br><span class="line"></span><br><span class="line">    <span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">post</span><span class="params">(self, *args, **kwargs)</span>:</span></span><br><span class="line">        no = self.get_argument(<span class="string">'no'</span>)</span><br><span class="line">        name = self.get_argument(<span class="string">'name'</span>)</span><br><span class="line">        loc = self.get_argument(<span class="string">'loc'</span>)</span><br><span class="line">        conn = self.settings[<span class="string">'mysql'</span>]</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="keyword">async</span> <span class="keyword">with</span> conn.cursor() <span class="keyword">as</span> cursor:</span><br><span class="line">                <span class="keyword">await</span> cursor.execute(<span class="string">'insert into tb_dept values (%s, %s, %s)'</span>,</span><br><span class="line">                                     (no, name, loc))</span><br><span class="line">            <span class="keyword">await</span> conn.commit()</span><br><span class="line">        <span class="keyword">except</span> aiomysql.MySQLError:</span><br><span class="line">            self.finish(json.dumps(&#123;</span><br><span class="line">                <span class="string">'code'</span>: <span class="number">20002</span>,</span><br><span class="line">                <span class="string">'mesg'</span>: <span class="string">'添加部门失败请确认部门信息'</span></span><br><span class="line">            &#125;))</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            self.set_status(<span class="number">201</span>)</span><br><span class="line">            self.finish()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">make_app</span><span class="params">(config)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> tornado.web.Application(</span><br><span class="line">        handlers=[(<span class="string">r'/api/depts/(.*)'</span>, HomeHandler), ],</span><br><span class="line">        **config</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">    parse_command_line()</span><br><span class="line">    app = make_app(&#123;</span><br><span class="line">        <span class="string">'debug'</span>: <span class="literal">True</span>,</span><br><span class="line">        <span class="string">'mysql'</span>: IOLoop.current().run_sync(connect_mysql)</span><br><span class="line">    &#125;)</span><br><span class="line">    app.listen(options.port)</span><br><span class="line">    IOLoop.current().start()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+
+<p>上面的代码中，我们用到了<code>aiomysql</code>这个三方库，它基于<code>pymysql</code>封装，实现了对MySQL操作的异步化。操作Redis可以使用<code>aioredis</code>，访问MongoDB可以使用<code>motor</code>，这些都是支持异步操作的三方库。</p>
+
+	</div>
+	<div class="meta split">
+		
+			<span>本文总阅读量 <span id="busuanzi_value_page_pv"></span> 次</span>
+		
+		<time class="post-date" datetime="2019-04-14T06:25:36.000Z" itemprop="datePublished">2019-04-14</time>
+	</div>
+</article>
+
+<!--评论-->
+
+	
+<div class="ds-thread" data-thread-key="异步化" data-title="异步化" data-url="http://yoursite.com/2019/04/14/异步化/"></div>
+<script type="text/javascript">
+
+var duoshuoQuery = {short_name:"yumemor"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0]
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+</script>
+
+
+  
+</div>
+
+
+  <svg id="bigTriangleColor" width="100%" height="40" viewBox="0 0 100 102" preserveAspectRatio="none">
+    <path d="M0 0 L50 100 L100 0 Z"></path>
+  </svg>
+
+  
+
+
+  <div class="wrapper"></div>
+
+
+
+
+
+<div class="fat-footer">
+	<div class="wrapper">
+		<div class="layout layout--center">
+			<div class="layout__item palm-mb">
+				<div class="media">
+					<img class="headimg" src='https://imgchr.github.la/steve.jpeg' alt='John Doe'>
+					<div class="media__body">
+						<h4>justpsvm</h4>
+						<p class='site-description'>Stay Hungry,Stay Foolish.</p>
+					</div>
+				</div>
+				<div class="author-contact">
+					<ul>
+						
+							
+							<li>
+				        		<a href="http://weibo.com/" target="_blank">
+				        			
+				        				<i class="iconfont icon-weibo"></i>
+				        			
+				        		</a>
+				        	</li>
+						
+							
+							<li>
+				        		<a href="https://github.com/" target="_blank">
+				        			
+				        				<i class="iconfont icon-github"></i>
+				        			
+				        		</a>
+				        	</li>
+						
+							
+							<li>
+				        		<a href="https://www.zhihu.com/" target="_blank">
+				        			
+										<i class="iconfont icon-zhihu"></i>
+				        			
+				        		</a>
+				        	</li>
+						
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<footer class="footer" role="contentinfo">
+	<div class="wrapper wrapper--wide split split--responsive">
+		
+			<span>本站总访问量 <span id="busuanzi_value_site_pv"></span> 次, 访客数 <span id="busuanzi_value_site_uv"></span> 人次</span>
+		
+		<span>Theme by <a href="http://github.com/justpsvm">justpsvm</a>. Powered by <a href="http://hexo.io">Hexo</a></span>
+	</div>
+</footer>
+
+	<!-－这里导入了 lib.js 里面涵盖了 jQuery 等框架 所以注释掉-->
+	<!--<script src="http://lib.sinaapp.com/js/jquery/2.0/jquery.min.js"></script>-->
+	<script src="/js/lib.js"></script>
+	<script src="/js/google-code-prettify/prettify.js"></script>
+	<script src="/js/module.js"></script>
+	<script src="/js/script.js"></script>
+	
+		<script async src="http://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+	
+	<script type='text/javascript'>
+		//代码高亮
+		$(document).ready(function(){
+	 		$('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto;');
+   			prettyPrint();
+		});
+	</script>
+	</body>
+</html>

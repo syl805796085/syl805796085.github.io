@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+  <head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    
+    <title>拓展User模型 继承AbstractUser | Hexo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    
+      <link rel="icon" href="/favicon.png">
+    
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <link rel="stylesheet" href="/js/google-code-prettify/tomorrow-night-eighties.min.css">
+
+  </head>
+
+  <body>
+</body></html>
+<header>
+	<a id="logo" href="/" title="Hexo">
+	<img src="/favicon.png" alt="Hexo"></a>
+	
+	
+		<!--搜索栏-->
+		<i class="js-toggle-search iconfont icon-search"></i>
+
+
+<form class="js-search search-form search-form--modal" method="get" action="http://gushi.li" role="search">
+	<div class="search-form__inner">
+		<div>
+			<i class="iconfont icon-search"></i>
+			<input class="text-input" placeholder="Enter Key..." type="search">
+		</div>
+	</div>
+</form>
+	
+
+	
+		<!--侧边导航栏-->
+		<a id="nav-toggle" href="#"><span></span></a>
+
+<nav>
+	<div class="menu-top-container">
+		<ul id="menu-top" class="menu">
+			
+				
+				<li class="current-menu-item">
+					<a href="http://weibo.com/" target="_blank">Weibo</a>
+				</li>
+			
+		</ul>
+	</div>
+</nav>
+	
+
+</header>
+<div class="m-header ">
+	<section id="hero1" class="hero">
+		<div class="inner">
+		</div>
+	</section>
+	
+		<figure class="top-image" data-enable=true></figure>
+	
+</div>
+
+<!--文章列表-->
+<div class="wrapper">
+  
+    <!--文章-->
+<article>
+	
+  
+    <h1 class="post-title" itemprop="name">
+      拓展User模型 继承AbstractUser
+    </h1>
+  
+
+	<div class='post-body mb'>
+		<h4 id="3-继承自AbstractUser："><a href="#3-继承自AbstractUser：" class="headerlink" title="3.继承自AbstractUser："></a>3.继承自AbstractUser：</h4><p>对于authenticate不满意，并且不想要修改原来User对象上的一些字段，但是想要增加一些字段，那么这时候可以直接继承自django.contrib.auth.models.AbstractUser，其实这个类也是django.contrib.auth.models.User的父类。比如我们想要在原来User模型的基础之上添加一个telephone和school字段。示例代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.contrib.auth.models <span class="keyword">import</span> AbstractUser</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span><span class="params">(AbstractUser)</span>:</span></span><br><span class="line">    telephone = models.CharField(max_length=<span class="number">11</span>,unique=<span class="literal">True</span>)</span><br><span class="line">    school = models.CharField(max_length=<span class="number">100</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 指定telephone作为USERNAME_FIELD，以后使用authenticate</span></span><br><span class="line">    <span class="comment"># 函数验证的时候，就可以根据telephone来验证</span></span><br><span class="line">    <span class="comment"># 而不是原来的username</span></span><br><span class="line">    USERNAME_FIELD = <span class="string">'telephone'</span></span><br><span class="line">    REQUIRED_FIELDS = []</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 重新定义Manager对象，在创建user的时候使用telephone和</span></span><br><span class="line">    <span class="comment"># password，而不是使用username和password</span></span><br><span class="line">    objects = UserManager()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserManager</span><span class="params">(BaseUserManager)</span>:</span></span><br><span class="line">    use_in_migrations = <span class="literal">True</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_create_user</span><span class="params">(self,telephone,password,**extra_fields)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> telephone:</span><br><span class="line">            <span class="keyword">raise</span> ValueError(<span class="string">"请填入手机号码！"</span>)</span><br><span class="line">        user = self.model(telephone=telephone,*extra_fields)</span><br><span class="line">        user.set_password(password)</span><br><span class="line">        user.save()</span><br><span class="line">        <span class="keyword">return</span> user</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">create_user</span><span class="params">(self,telephone,password,**extra_fields)</span>:</span></span><br><span class="line">        extra_fields.setdefault(<span class="string">'is_superuser'</span>,<span class="literal">False</span>)</span><br><span class="line">        <span class="keyword">return</span> self._create_user(telephone,password)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">create_superuser</span><span class="params">(self,telephone,password,**extra_fields)</span>:</span></span><br><span class="line">        extra_fields[<span class="string">'is_superuser'</span>] = <span class="literal">True</span></span><br><span class="line">        <span class="keyword">return</span> self._create_user(telephone,password)</span><br></pre></td></tr></table></figure>
+
+<p>然后再在<code>settings</code>中配置好<code>AUTH_USER_MODEL=youapp.User</code>。</p>
+<p><strong>这种方式因为破坏了原来User模型的表结构，所以必须要在第一次</strong><code>migrate</code><strong>前就先定义好。</strong></p>
+<h4 id="4-继承自AbstractBaseUser模型："><a href="#4-继承自AbstractBaseUser模型：" class="headerlink" title="4.继承自AbstractBaseUser模型："></a>4.继承自AbstractBaseUser模型：</h4><p>如果你想修改默认的验证方式，并且对于原来<code>User</code>模型上的一些字段不想要，那么可以自定义一个模型，然后继承自<code>AbstractBaseUser</code>，再添加你想要的字段。这种方式会比较麻烦，最好是确定自己对<code>Django</code>比较了解才推荐使用。步骤如下：</p>
+<h5 id="1，创建模型。示例代码如下："><a href="#1，创建模型。示例代码如下：" class="headerlink" title="1，创建模型。示例代码如下："></a><strong>1，创建模型。示例代码如下：</strong></h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span><span class="params">(AbstractBaseUser,PermissionsMixin)</span>:</span></span><br><span class="line">     email = models.EmailField(unique=<span class="literal">False</span>)</span><br><span class="line">     username = models.CharField(max_length=<span class="number">150</span>)</span><br><span class="line">     telephone = models.CharField(max_length=<span class="number">11</span>,unique=<span class="literal">True</span>)</span><br><span class="line">     is_active = models.BooleanField(default=<span class="literal">True</span>)</span><br><span class="line"> </span><br><span class="line">     USERNAME_FIELD = <span class="string">'telephone'</span></span><br><span class="line">     REQUIRED_FIELDS = []</span><br><span class="line"> </span><br><span class="line">     objects = UserManager()</span><br><span class="line"> </span><br><span class="line">     <span class="function"><span class="keyword">def</span> <span class="title">get_full_name</span><span class="params">(self)</span>:</span></span><br><span class="line">         <span class="keyword">return</span> self.username</span><br><span class="line"> </span><br><span class="line">     <span class="function"><span class="keyword">def</span> <span class="title">get_short_name</span><span class="params">(self)</span>:</span></span><br><span class="line">         <span class="keyword">return</span> self.username</span><br></pre></td></tr></table></figure>
+
+<p>其中<code>password</code>和<code>last_login</code>是在<code>AbstractBaseUser</code>中已经添加好了的，我们直接继承就可以了。然后我们再添加我们想要的字段。比如<code>email</code>、<code>username</code>、<code>telephone</code>等。这样就可以实现自己想要的字段了。但是因为我们重写了<code>User</code>，所以应该尽可能的模拟<code>User</code>模型：</p>
+<ul>
+<li><code>USERNAME_FIELD</code>：用来描述<code>User</code>模型名字字段的字符串，作为唯一的标识。如果没有修改，那么会使用<code>USERNAME</code>来作为唯一字段。</li>
+<li><code>REQUIRED_FIELDS</code>：一个字段名列表，用于当通过<code>createsuperuser</code>管理命令创建一个用户时的提示。</li>
+<li><code>is_active</code>：一个布尔值，用于标识用户当前是否可用。</li>
+<li><code>get_full_name()</code>：获取完整的名字。</li>
+<li><code>get_short_name()</code>：一个比较简短的用户名。</li>
+</ul>
+<h5 id="2，重新定义UserManager："><a href="#2，重新定义UserManager：" class="headerlink" title="2，重新定义UserManager："></a><strong>2，重新定义UserManager：</strong></h5><p>我们还需要定义自己的UserManager，因为默认的UserManager在创建用户的时候使用的是username和password，那么我们要替换成telephone。示例代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserManager</span><span class="params">(BaseUserManager)</span>:</span></span><br><span class="line">    use_in_migrations = <span class="literal">True</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_create_user</span><span class="params">(self,telephone,password,**extra_fields)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> telephone:</span><br><span class="line">            <span class="keyword">raise</span> ValueError(<span class="string">"请填入手机号码！"</span>)</span><br><span class="line">        user = self.model(telephone=telephone,*extra_fields)</span><br><span class="line">        user.set_password(password)</span><br><span class="line">        user.save()</span><br><span class="line">        <span class="keyword">return</span> user</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">create_user</span><span class="params">(self,telephone,password,**extra_fields)</span>:</span></span><br><span class="line">        extra_fields.setdefault(<span class="string">'is_superuser'</span>,<span class="literal">False</span>)</span><br><span class="line">        <span class="keyword">return</span> self._create_user(telephone,password)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">create_superuser</span><span class="params">(self,telephone,password,**extra_fields)</span>:</span></span><br><span class="line">        extra_fields[<span class="string">'is_superuser'</span>] = <span class="literal">True</span></span><br><span class="line">        <span class="keyword">return</span> self._create_user(telephone,password)</span><br></pre></td></tr></table></figure>
+
+<h5 id="3-设置Setting"><a href="#3-设置Setting" class="headerlink" title="3.设置Setting"></a>3.设置Setting</h5><p>在创建了新的<code>User</code>模型后，还需要在<code>settings</code>中配置好。配置<code>AUTH_USER_MODEL=&#39;appname.User&#39;</code>。</p>
+<h5 id="4-使用自定义模型"><a href="#4-使用自定义模型" class="headerlink" title="4.使用自定义模型"></a>4.使用自定义模型</h5><p>如何使用这个自定义的模型：比如以后我们有一个<code>Article</code>模型，需要通过外键引用这个<code>User</code>模型，那么可以通过以下两种方式引用。<br>第一种就是直接将<code>User</code>导入到当前文件中。示例代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.db <span class="keyword">import</span> models</span><br><span class="line"><span class="keyword">from</span> myauth.models <span class="keyword">import</span> User</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Article</span><span class="params">(models.Model)</span>:</span></span><br><span class="line">    title = models.CharField(max_length=<span class="number">100</span>)</span><br><span class="line">    content = models.TextField()</span><br><span class="line">    author = models.ForeignKey(User, on_delete=models.CASCADE)</span><br></pre></td></tr></table></figure>
+
+<p>这种方式是可以行得通的。但是为了更好的使用性，建议还是将<code>User</code>抽象出来，使用<code>settings.AUTH_USER_MODEL</code>来表示。示例代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.db <span class="keyword">import</span> models</span><br><span class="line"><span class="keyword">from</span> django.conf <span class="keyword">import</span> settings</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Article</span><span class="params">(models.Model)</span>:</span></span><br><span class="line">    title = models.CharField(max_length=<span class="number">100</span>)</span><br><span class="line">    content = models.TextField()</span><br><span class="line">    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p><strong>这种方式因为破坏了原来User模型的表结构，所以必须要在第一次</strong><code>migrate</code><strong>前就先定义好。</strong></p>
+
+	</div>
+	<div class="meta split">
+		
+			<span>本文总阅读量 <span id="busuanzi_value_page_pv"></span> 次</span>
+		
+		<time class="post-date" datetime="2019-07-28T12:15:45.000Z" itemprop="datePublished">2019-07-28</time>
+	</div>
+</article>
+
+<!--评论-->
+
+	
+<div class="ds-thread" data-thread-key="拓展User模型-继承AbstractUser" data-title="拓展User模型 继承AbstractUser" data-url="http://yoursite.com/2019/07/28/拓展User模型-继承AbstractUser/"></div>
+<script type="text/javascript">
+
+var duoshuoQuery = {short_name:"yumemor"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0]
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+</script>
+
+
+  
+</div>
+
+
+  <svg id="bigTriangleColor" width="100%" height="40" viewBox="0 0 100 102" preserveAspectRatio="none">
+    <path d="M0 0 L50 100 L100 0 Z"></path>
+  </svg>
+
+  
+
+
+  <div class="wrapper"></div>
+
+
+
+
+
+<div class="fat-footer">
+	<div class="wrapper">
+		<div class="layout layout--center">
+			<div class="layout__item palm-mb">
+				<div class="media">
+					<img class="headimg" src='https://imgchr.github.la/steve.jpeg' alt='John Doe'>
+					<div class="media__body">
+						<h4>justpsvm</h4>
+						<p class='site-description'>Stay Hungry,Stay Foolish.</p>
+					</div>
+				</div>
+				<div class="author-contact">
+					<ul>
+						
+							
+							<li>
+				        		<a href="http://weibo.com/" target="_blank">
+				        			
+				        				<i class="iconfont icon-weibo"></i>
+				        			
+				        		</a>
+				        	</li>
+						
+							
+							<li>
+				        		<a href="https://github.com/" target="_blank">
+				        			
+				        				<i class="iconfont icon-github"></i>
+				        			
+				        		</a>
+				        	</li>
+						
+							
+							<li>
+				        		<a href="https://www.zhihu.com/" target="_blank">
+				        			
+										<i class="iconfont icon-zhihu"></i>
+				        			
+				        		</a>
+				        	</li>
+						
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<footer class="footer" role="contentinfo">
+	<div class="wrapper wrapper--wide split split--responsive">
+		
+			<span>本站总访问量 <span id="busuanzi_value_site_pv"></span> 次, 访客数 <span id="busuanzi_value_site_uv"></span> 人次</span>
+		
+		<span>Theme by <a href="http://github.com/justpsvm">justpsvm</a>. Powered by <a href="http://hexo.io">Hexo</a></span>
+	</div>
+</footer>
+
+	<!-－这里导入了 lib.js 里面涵盖了 jQuery 等框架 所以注释掉-->
+	<!--<script src="http://lib.sinaapp.com/js/jquery/2.0/jquery.min.js"></script>-->
+	<script src="/js/lib.js"></script>
+	<script src="/js/google-code-prettify/prettify.js"></script>
+	<script src="/js/module.js"></script>
+	<script src="/js/script.js"></script>
+	
+		<script async src="http://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+	
+	<script type='text/javascript'>
+		//代码高亮
+		$(document).ready(function(){
+	 		$('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto;');
+   			prettyPrint();
+		});
+	</script>
+	</body>
+</html>

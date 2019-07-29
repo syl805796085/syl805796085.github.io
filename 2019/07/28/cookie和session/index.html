@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html>
+  <head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    
+    <title>cookie和session | Hexo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    
+      <link rel="icon" href="/favicon.png">
+    
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <link rel="stylesheet" href="/js/google-code-prettify/tomorrow-night-eighties.min.css">
+
+  </head>
+
+  <body>
+</body></html>
+<header>
+	<a id="logo" href="/" title="Hexo">
+	<img src="/favicon.png" alt="Hexo"></a>
+	
+	
+		<!--搜索栏-->
+		<i class="js-toggle-search iconfont icon-search"></i>
+
+
+<form class="js-search search-form search-form--modal" method="get" action="http://gushi.li" role="search">
+	<div class="search-form__inner">
+		<div>
+			<i class="iconfont icon-search"></i>
+			<input class="text-input" placeholder="Enter Key..." type="search">
+		</div>
+	</div>
+</form>
+	
+
+	
+		<!--侧边导航栏-->
+		<a id="nav-toggle" href="#"><span></span></a>
+
+<nav>
+	<div class="menu-top-container">
+		<ul id="menu-top" class="menu">
+			
+				
+				<li class="current-menu-item">
+					<a href="http://weibo.com/" target="_blank">Weibo</a>
+				</li>
+			
+		</ul>
+	</div>
+</nav>
+	
+
+</header>
+<div class="m-header ">
+	<section id="hero1" class="hero">
+		<div class="inner">
+		</div>
+	</section>
+	
+		<figure class="top-image" data-enable=true></figure>
+	
+</div>
+
+<!--文章列表-->
+<div class="wrapper">
+  
+    <!--文章-->
+<article>
+	
+  
+    <h1 class="post-title" itemprop="name">
+      cookie和session
+    </h1>
+  
+
+	<div class='post-body mb'>
+		<p><font color="red" size="7">cookie和session</font></p>
+<ol>
+<li><p><font color="redsa" size="5">cookie</font></p>
+<ol>
+<li><p><font color="reds" size="4">cookie的使用方法</font></p>
+<ol>
+<li><p><font color="Fuchsia" size="3">设置cookie</font></p>
+<ul>
+<li><p>from django.shortcuts import render,HttpResponse</p>
+<p>​    def set_cookie(request):</p>
+<p><font size="3">        在HTTPResponse部分设置COOKIE值</font></p>
+<p>​        cookie_reponse = HttpResponse(‘这是一个关于cookie的测试’)<br>​        cookie_reponse.set_cookie(‘test’,’hello cookie’)<br>​        return cookie_reponse</p>
+</li>
+</ul>
+</li>
+<li><p><font color="Fuchsia" size="3">获取cookie</font></p>
+<ul>
+<li><p>def get_cookie(request):</p>
+<p><font size="3">    获取cookie值，从request属性中的COOKIE属性中</font></p>
+<p>​    cookie_data = request.COOKIES.get(‘test’)<br>​    return HttpResponse(‘Cookie值为:%s’ % cookie_data)</p>
+</li>
+</ul>
+</li>
+<li><p><font color="Fuchsia" size="3">删除cookie</font></p>
+<ul>
+<li>def delete_cookie(request):<pre><code>response = HttpResponseRedirect(&apos;/check_cookie/&apos;)
+  response.delete_cookie(&apos;test&apos;)
+  return response</code></pre></li>
+</ul>
+</li>
+<li><p><font color="Fuchsia" size="3">怎么防止修改cookie</font></p>
+<ul>
+<li><p>使用set_signed_cookie这个函数进行防止用户在客户端进行修改(并不是直接给cookie加密)</p>
+</li>
+<li><p><font color="LightSalmon" size="3">代码：</font></p>
+<ul>
+<li><p>def check_salt_cookie(request):</p>
+<pre><code>try:
+      salt_cookie = request.get_signed_cookie(key=&apos;salt_cookie&apos;,salt=&apos;nice&apos;)
+  except KeyError: #获取不到该key值的Cookie
+      response = HttpResponse(&apos;正在设置一个salt Cookie值&apos;)
+      response.set_signed_cookie(key=&apos;salt_cookie&apos;,salt=&apos;nice&apos;,value=&apos;salt_cookie&apos;)</code></pre><p>​        return response<br>​    else: #获取到了对应key值，展示到新的HttpResonse中<br>​        return HttpResponse(‘获取到的salt Cookie值:%s’ % salt_cookie)</p>
+</li>
+<li><p><font color="lightred" size="3">注意：</font></p>
+<ul>
+<li>因为第一次访问时没有添加cookie值所以就会有keyerror的错误</li>
+<li>当有了这个错误你就设置cookie就可以了</li>
+<li>当你刷新页面的时候已经有了cookie值所以直接获取加盐的cookie</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p><font color="redsa" size="5">session</font></p>
+<ol>
+<li><p><font color="reds" size="4">session的使用方法</font></p>
+<ol>
+<li><p><font color="Fuchsia" size="3">使用流程</font></p>
+<ul>
+<li>客户端访问服务端，服务端为每一个客户端返回一个唯一的 sessionid ，比如 xxx 。</li>
+<li>客户端需要保持某些状态，比如维持登陆。那么服务端会构造一个 {sessionid: xxx } 类似这样的字典数据加到 Cookie 中发送给用户。注意此时，只是一个随机字符串，返回给客户端的内容并不会像之前一样包含实际数据。</li>
+<li>服务端在后台把返回给客户端的 xxx 字符串作为 key 值，对应需要保存的服务端数据为一个新的字典，存储在<br>服务器上，例如： {xxx : {id:1}}</li>
+<li><font color="lightred" size="3">注意：</font><ol>
+<li>默认存储在数据库的 Session 数据，是通过 base64 编码的，我们可以通过 Python 的<br> base64 模块下的 b64decode() 解码得到原始数据</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><p><font color="Fuchsia" size="3">获取需要的session</font></p>
+<ul>
+<li>session_data = request.session.get(Key)</li>
+<li>session_data = request.session[Key]</li>
+<li><font color="lightred" size="3">注意：</font><ol>
+<li>在 Session 中获取对应值， get 方法获取时，如不存在该 Key 值，不会引发异常，返回 None<br>而第二种直接通过字典获取，如 Key 值不存在，引发 KeyErro</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><p><font color="Fuchsia" size="3">删除session</font></p>
+<ul>
+<li>del request.seesion[Key]<ol>
+<li>删除对应session， Key 值不存在时，引发 KeyError</li>
+</ol>
+</li>
+<li>request.session.clear()<ol>
+<li>清空 Session 中的所有数据。这里客户端还会保留 sessionid<br>只不过在服务端 sessionid 对应的数据没有了。</li>
+</ol>
+</li>
+<li>request.session.flush()<ol>
+<li>直接删除当前客户端的的Seesion数据。这里不光服务端sessionid对应的数据没有了，客户端的<br>sessionid也会被删除</li>
+</ol>
+</li>
+</ul>
+<ol>
+<li><p><font color="LightCoral" size="3">代码：</font></p>
+<ul>
+<li><p>def delete_session(request):</p>
+<pre><code>if request.session.get(&apos;test_id&apos;):
+      del request.session[&apos;test_id&apos;]
+      return HttpResponse(&apos;Session被删了&apos;)
+  else:
+      return HttpResponse(&apos;目前没有任何需要删除的session&apos;)</code></pre></li>
+<li><p><font color="lightred" size="3">注意：</font></p>
+<ul>
+<li>这里使用 del request.session[Key] 的方式来进行 Session 的删除</li>
+<li>如果存在对应 test_id 的 Session 值则删除，反之返回一个字符串</li>
+</ul>
+</li>
+<li><p><font color="lightred" size="3">总结：</font></p>
+<ol>
+<li>使用的是 del 的针对性删除方式，这样不会将整个客户端的 session 删除掉</li>
+<li>使用 request.session.clear() ，只是清空了服务端 Session 中的数据，但是客户端的 Cookie 中还会保存sessionid ，只不过这个值对应的字符串所对应的用户数据是一个空</li>
+<li>使用 request.session.flush() ，那么客户端 Cookie 中保存的 sessionid 首先会被删除，其次通过<br>sessionid 值保存的用户数据也会被全部删除。</li>
+</ol>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+<li><p><font color="Fuchsia" size="3">如何设置有效期设置cookie</font></p>
+<ol>
+<li><font color="LightCoral" size="4">设置Session的有效时间</font><ul>
+<li>value ：有效时间</li>
+<li>为整数时：将在value为秒单位之后过期</li>
+<li>为0时：将在用户关闭浏览器之后过期。</li>
+<li>为None时：使用全局过期的设置，默认为两个星期，14天。</li>
+<li>为datetime时：在这个指定时间后过期。</li>
+</ul>
+</li>
+<li><font color="LightCoral" size="4">返回距离过期还剩下的秒数</font><ul>
+<li><font color="LightCoral" size="3">代码：</font><ol>
+<li>request.session.get_expiry_age()</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><font color="LightCoral" size="4">清除过期的 Session 会话</font><ul>
+<li><font color="LightCoral" size="3">代码：</font><ol>
+<li>request.session.clear_expired()</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><font color="LightCoral" size="4">代码展示：</font><ul>
+<li>from django.shortcuts import render,HttpResponse<br>import datetime<br>def set_session(request):<pre><code>if request.session.get(&apos;test_id&apos;):
+    session_data = request.session.get(&apos;test_id&apos;)# 用户拿到的的session随机字符串
+    session_key = request.session.session_key # 获取客户端浏览器中的SessionID值
+    session_expire = request.session.get_expiry_age()
+    now = datetime.datetime.now()
+    expire_time = now + datetime.timedelta(seconds=session_expire)
+    response = &apos;&lt;div&gt;SessionID : %s&lt;/div&gt;&apos; % session_key + \
+               &apos;&lt;div&gt;Session : %s&lt;/div&gt;&apos; % session_data + \
+               &apos;&lt;div&gt;ExpireTime : %s&lt;/div&gt;&apos; % expire_time
+    return HttpResponse(response)
+else:
+    request.session[&apos;test_id&apos;] = &apos;TEST&apos;
+    request.session.set_expiry(None)
+    return HttpResponse(&apos;已设置好Session&apos;)</code></pre></li>
+<li><font color="lightred" size="3">注意：</font><ol>
+<li>用户在第一次访问时，会走 else 分支</li>
+<li>因为此时还没有任何服务端的 Session 及客户端的 Cookie 值设定</li>
+<li>所以我们通过 request.session[Key] 的方式来设置一个 Session 值，值为 TEST</li>
+<li>当用户第二次访问时将展示出所设置好的Session值及在客户端浏览器中存储的sessionid</li>
+</ol>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+
+	</div>
+	<div class="meta split">
+		
+			<span>本文总阅读量 <span id="busuanzi_value_page_pv"></span> 次</span>
+		
+		<time class="post-date" datetime="2019-07-28T12:15:45.000Z" itemprop="datePublished">2019-07-28</time>
+	</div>
+</article>
+
+<!--评论-->
+
+	
+<div class="ds-thread" data-thread-key="cookie和session" data-title="cookie和session" data-url="http://yoursite.com/2019/07/28/cookie和session/"></div>
+<script type="text/javascript">
+
+var duoshuoQuery = {short_name:"yumemor"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0]
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+</script>
+
+
+  
+</div>
+
+
+  <svg id="bigTriangleColor" width="100%" height="40" viewBox="0 0 100 102" preserveAspectRatio="none">
+    <path d="M0 0 L50 100 L100 0 Z"></path>
+  </svg>
+
+  
+
+
+  <div class="wrapper"></div>
+
+
+
+
+
+<div class="fat-footer">
+	<div class="wrapper">
+		<div class="layout layout--center">
+			<div class="layout__item palm-mb">
+				<div class="media">
+					<img class="headimg" src='https://imgchr.github.la/steve.jpeg' alt='John Doe'>
+					<div class="media__body">
+						<h4>justpsvm</h4>
+						<p class='site-description'>Stay Hungry,Stay Foolish.</p>
+					</div>
+				</div>
+				<div class="author-contact">
+					<ul>
+						
+							
+							<li>
+				        		<a href="http://weibo.com/" target="_blank">
+				        			
+				        				<i class="iconfont icon-weibo"></i>
+				        			
+				        		</a>
+				        	</li>
+						
+							
+							<li>
+				        		<a href="https://github.com/" target="_blank">
+				        			
+				        				<i class="iconfont icon-github"></i>
+				        			
+				        		</a>
+				        	</li>
+						
+							
+							<li>
+				        		<a href="https://www.zhihu.com/" target="_blank">
+				        			
+										<i class="iconfont icon-zhihu"></i>
+				        			
+				        		</a>
+				        	</li>
+						
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<footer class="footer" role="contentinfo">
+	<div class="wrapper wrapper--wide split split--responsive">
+		
+			<span>本站总访问量 <span id="busuanzi_value_site_pv"></span> 次, 访客数 <span id="busuanzi_value_site_uv"></span> 人次</span>
+		
+		<span>Theme by <a href="http://github.com/justpsvm">justpsvm</a>. Powered by <a href="http://hexo.io">Hexo</a></span>
+	</div>
+</footer>
+
+	<!-－这里导入了 lib.js 里面涵盖了 jQuery 等框架 所以注释掉-->
+	<!--<script src="http://lib.sinaapp.com/js/jquery/2.0/jquery.min.js"></script>-->
+	<script src="/js/lib.js"></script>
+	<script src="/js/google-code-prettify/prettify.js"></script>
+	<script src="/js/module.js"></script>
+	<script src="/js/script.js"></script>
+	
+		<script async src="http://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+	
+	<script type='text/javascript'>
+		//代码高亮
+		$(document).ready(function(){
+	 		$('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto;');
+   			prettyPrint();
+		});
+	</script>
+	</body>
+</html>
